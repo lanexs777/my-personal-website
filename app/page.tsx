@@ -35,7 +35,7 @@ export default function Home() {
                 <div className="order-1 md:order-2 flex-shrink-0">
                     <div className="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full bg-muted">
                         <Image
-                            src="/profile.png"
+                            src="/images/frog.png"
                             alt="Profile picture showing a pixel art frog on a rubber duck"
                             fill
                             className="object-contain transition-transform duration-500 hover:scale-105"
