@@ -35,10 +35,10 @@ export default function Home() {
                 <div className="order-1 md:order-2 flex-shrink-0">
                     <div className="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full bg-muted">
                         <Image
-                            src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                            alt="Profile"
+                            src="/profile.png"
+                            alt="Profile picture showing a pixel art frog on a rubber duck"
                             fill
-                            className="object-cover transition-transform duration-500 hover:scale-105"
+                            className="object-contain transition-transform duration-500 hover:scale-105"
                             priority
                         />
                     </div>
