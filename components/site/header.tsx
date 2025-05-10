@@ -28,7 +28,7 @@ export function Header() {
                         tabIndex={0}
                     >
                         <span className="font-bold text-xl sm:text-2xl">
-                            Portfolio
+                            khyler5.com
                         </span>
                     </Link>
 

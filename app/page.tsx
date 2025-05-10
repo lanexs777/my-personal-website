@@ -9,11 +9,12 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
                 <div className="order-2 md:order-1 flex-1 space-y-6">
                     <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight">
-                        Hi, I'm <span className="text-primary">Your Name</span>
+                        Hi, I'm <span className="text-primary">Khyler</span>
                     </h1>
                     <p className="text-xl text-muted-foreground">
-                        Welcome to my personal corner of the internet, where I
-                        share my thoughts, notes, and discoveries.
+                        Welcome to my personal space on the web — a place where
+                        I share my thoughts, experiences, and reflections on
+                        what I'm learning and building.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 pt-4">
                         <Button asChild size="lg">
@@ -117,16 +118,18 @@ export default function Home() {
                 </h2>
                 <div className="prose prose-neutral dark:prose-invert max-w-none">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nullam euismod, nisi vel consectetur interdum, nisl nunc
-                        egestas nisi, euismod aliquam nisl nunc egestas nisi.
-                        Nullam euismod, nisi vel consectetur interdum, nisl nunc
-                        egestas nisi, euismod.
+                        I'm a software engineer based in Seattle, passionate
+                        about building thoughtful, user-centered web
+                        experiences. By day, I craft scalable, performant code —
+                        and by night (and weekends), I chase powder as an avid
+                        snowboarder and explore the city's ever-evolving food
+                        scene as a dedicated foodie.
                     </p>
+                    <br></br>
                     <p>
-                        Nullam euismod, nisi vel consectetur interdum, nisl nunc
-                        egestas nisi, euismod aliquam nisl nunc egestas nisi.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Whether it’s optimizing a web app, trying a new ramen
+                        spot, or shaving a few seconds off my mile time, I’m
+                        always looking for ways to grow, connect, and create.
                     </p>
                 </div>
             </section>

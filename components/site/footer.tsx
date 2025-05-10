@@ -13,7 +13,7 @@ export function Footer() {
                 </div>
                 <div className="flex items-center space-x-4">
                     <Link
-                        href="https://instagram.com"
+                        href="https://www.instagram.com/khyler5/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-2"
@@ -23,7 +23,7 @@ export function Footer() {
                         <Instagram className="h-5 w-5" />
                     </Link>
                     <Link
-                        href="https://podcasters.spotify.com"
+                        href="https://podcasts.apple.com/us/podcast/khy%E5%A7%8B%E6%80%9D%E8%80%83/id1805224277"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-2"
