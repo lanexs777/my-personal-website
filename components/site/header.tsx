@@ -24,8 +24,8 @@ export function Header() {
                 <div className="mr-4 flex">
                     <Link
                         href="/"
-                        className="mr-6 flex items-center space-x-2"
-                        aria-label="Go to homepage"
+                        className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
+                        tabIndex={0}
                     >
                         <span className="font-bold text-xl sm:text-2xl">
                             Portfolio
@@ -42,7 +42,7 @@ export function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "text-sm font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                    "text-sm font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2 py-1",
                                     pathname === link.href
                                         ? "text-foreground"
                                         : "text-muted-foreground"
@@ -50,6 +50,7 @@ export function Header() {
                                 aria-current={
                                     pathname === link.href ? "page" : undefined
                                 }
+                                tabIndex={0}
                             >
                                 {link.label}
                             </Link>
@@ -68,6 +69,7 @@ export function Header() {
                         aria-expanded={mobileMenuOpen}
                         aria-controls="mobile-menu"
                         aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        tabIndex={0}
                     >
                         {mobileMenuOpen ? (
                             <X className="h-6 w-6" />
@@ -92,7 +94,7 @@ export function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "text-base font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                                    "text-base font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2 py-1",
                                     pathname === link.href
                                         ? "text-foreground"
                                         : "text-muted-foreground"
@@ -101,6 +103,7 @@ export function Header() {
                                 aria-current={
                                     pathname === link.href ? "page" : undefined
                                 }
+                                tabIndex={0}
                             >
                                 {link.label}
                             </Link>

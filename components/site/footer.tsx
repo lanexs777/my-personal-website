@@ -18,6 +18,7 @@ export function Footer() {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-2"
                         aria-label="Visit our Instagram"
+                        tabIndex={0}
                     >
                         <Instagram className="h-5 w-5" />
                     </Link>
@@ -27,6 +28,7 @@ export function Footer() {
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-2"
                         aria-label="Listen to our podcast"
+                        tabIndex={0}
                     >
                         <Headphones className="h-5 w-5" />
                     </Link>
