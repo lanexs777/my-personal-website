@@ -24,7 +24,7 @@ export function Header() {
                 <div className="mr-4 flex">
                     <Link
                         href="/"
-                        className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md"
+                        className="mr-6 flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-4"
                         tabIndex={0}
                     >
                         <span className="font-bold text-xl sm:text-2xl">
