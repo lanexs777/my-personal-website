@@ -52,6 +52,7 @@ export default async function NotePage({ params }: NotePageProps) {
                 variant="ghost"
                 className="mb-8 -ml-4 flex items-center gap-1"
                 asChild
+                tabIndex={0}
             >
                 <Link href="/notes">
                     <ArrowLeft className="h-4 w-4" />

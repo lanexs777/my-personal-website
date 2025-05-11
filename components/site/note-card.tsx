@@ -11,6 +11,7 @@ export function NoteCard({ note }: NoteCardProps) {
         <Link
             href={`/notes/${note.slug}`}
             className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+            tabIndex={0}
         >
             <div className="group relative overflow-hidden rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-all duration-300 hover:shadow-md h-full flex flex-col">
                 <div className="mb-4 text-sm text-muted-foreground">
