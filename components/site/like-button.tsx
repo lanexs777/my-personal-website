@@ -35,11 +35,18 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const handleLike = async () => {
         try {
             setIsLoading(true);
+            // Optimistically update the UI
+            setLikes((prev) => prev + 1);
+            
             const { error } = await supabase
                 .from('likes')
                 .insert({ note_slug: slug });
 
-            if (error) throw error;
+            if (error) {
+                // Revert the optimistic update if there's an error
+                setLikes((prev) => prev - 1);
+                throw error;
+            }
         } catch (error) {
             console.error('Error liking note:', error);
         } finally {
