@@ -14,7 +14,7 @@ interface LikeButtonProps {
 interface Triangle {
     id: number;
     angle: number;
-    distance: number;
+    size: 'small' | 'large';
     color: string;
 }
 
@@ -23,7 +23,14 @@ interface CountIndicator {
     count: number;
 }
 
-const COLORS = ['#FFC107', '#FF5722', '#2196F3', '#4CAF50', '#9C27B0'];
+const COLORS = ['#FF5722', '#FFC107', '#2196F3', '#4CAF50', '#9C27B0'];
+
+const TRIANGLE_ANGLES = [
+    // Large triangles
+    0, 72, 144, 216, 288,
+    // Small triangles
+    36, 108, 180, 252, 324
+];
 
 export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
@@ -52,21 +59,15 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     }, [slug]);
 
     const createTriangles = () => {
-        const newTriangles: Triangle[] = [];
-        const numTriangles = 8;
-        
-        for (let i = 0; i < numTriangles; i++) {
-            const angle = (i * 360) / numTriangles + Math.random() * 30 - 15;
-            newTriangles.push({
-                id: nextTriangleId + i,
-                angle,
-                distance: 0,
-                color: COLORS[Math.floor(Math.random() * COLORS.length)],
-            });
-        }
+        const newTriangles: Triangle[] = TRIANGLE_ANGLES.map((angle, i) => ({
+            id: nextTriangleId + i,
+            angle,
+            size: i < 5 ? 'large' : 'small',
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        }));
         
         setTriangles(prev => [...prev, ...newTriangles]);
-        setNextTriangleId(prev => prev + numTriangles);
+        setNextTriangleId(prev => prev + newTriangles.length);
         
         setTimeout(() => {
             setTriangles(prev => prev.filter(t => !newTriangles.includes(t)));
@@ -74,12 +75,14 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     };
 
     const createCountIndicator = () => {
-        setCountIndicators(prev => [...prev, { id: nextCountId, count: 1 }]);
+        const newIndicator = { id: nextCountId, count: 1 };
+        setCountIndicators(prev => [...prev, newIndicator]);
         setNextCountId(prev => prev + 1);
         
+        // Remove the count indicator after a longer delay
         setTimeout(() => {
-            setCountIndicators(prev => prev.filter(c => c.id !== nextCountId));
-        }, 1000);
+            setCountIndicators(prev => prev.filter(c => c.id !== newIndicator.id));
+        }, 2000);
     };
 
     const handleLike = async (event: React.MouseEvent) => {
@@ -121,23 +124,25 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             {triangles.map((triangle) => (
                 <div
                     key={triangle.id}
-                    className="absolute left-1/2 top-1/2 w-2 h-2 pointer-events-none"
+                    className="absolute left-1/2 top-1/2 pointer-events-none"
                     style={{
-                        transform: `rotate(${triangle.angle}deg) translateY(${triangle.distance}px)`,
-                        transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                        width: triangle.size === 'large' ? '8px' : '6px',
+                        height: triangle.size === 'large' ? '8px' : '6px',
                         backgroundColor: triangle.color,
                         clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                        transform: `translate(-50%, -50%) rotate(${triangle.angle}deg) translateY(-20px)`,
                         animation: 'triangleFade 1s forwards',
-                    }}
+                        '--angle': `${triangle.angle}deg`,
+                    } as any}
                 />
             ))}
             
             {countIndicators.map((indicator) => (
                 <div
                     key={indicator.id}
-                    className="absolute left-1/2 top-0 -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs pointer-events-none"
+                    className="absolute left-1/2 -top-2 bg-black text-white rounded-full px-2 py-1 text-xs pointer-events-none"
                     style={{
-                        animation: 'countFloat 1s forwards',
+                        animation: 'countFloat 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                     }}
                 >
                     +{indicator.count}

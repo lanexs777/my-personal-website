@@ -84,18 +84,26 @@
 @keyframes triangleFade {
   0% {
     opacity: 1;
-    transform: rotate(var(--angle)) translateY(0);
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-20px);
   }
   100% {
     opacity: 0;
-    transform: rotate(var(--angle)) translateY(-20px);
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-40px);
   }
 }
 
 @keyframes countFloat {
   0% {
-    opacity: 1;
+    opacity: 0;
     transform: translateY(0) translateX(-50%);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-10px) translateX(-50%);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-10px) translateX(-50%);
   }
   100% {
     opacity: 0;
