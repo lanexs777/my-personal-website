@@ -9,17 +9,29 @@ import { useTheme } from 'next-themes';
 
 interface LikeButtonProps {
     slug: string;
-    initialLikes: number;
 }
 
-export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
-    const [likes, setLikes] = useState(initialLikes);
+export function LikeButton({ slug }: LikeButtonProps) {
+    const [likes, setLikes] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
     const [countValue, setCountValue] = useState(2);
     const { theme } = useTheme();
 
     useEffect(() => {
+        // Fetch initial like count
+        const fetchLikes = async () => {
+            const { count } = await supabase
+                .from('likes')
+                .select('*', { count: 'exact' })
+                .eq('note_slug', slug);
+            
+            setLikes(count || 0);
+        };
+
+        fetchLikes();
+
+        // Set up realtime subscription
         const channel = supabase
             .channel('likes')
             .on('postgres_changes', {
