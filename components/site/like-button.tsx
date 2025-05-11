@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Heart } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '../ui/button';
@@ -17,6 +17,7 @@ export function LikeButton({ slug }: LikeButtonProps) {
     const [showCount, setShowCount] = useState(false);
     const [userClicks, setUserClicks] = useState(0);
     const { theme, systemTheme } = useTheme();
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         // Fetch initial like count
@@ -69,6 +70,9 @@ export function LikeButton({ slug }: LikeButtonProps) {
                 .insert({ note_slug: slug });
 
             if (error) throw error;
+
+            // Refocus the button after the like action
+            buttonRef.current?.focus();
         } catch (error) {
             console.error('Error liking note:', error);
         } finally {
@@ -83,6 +87,7 @@ export function LikeButton({ slug }: LikeButtonProps) {
     return (
         <div className="relative">
             <Button
+                ref={buttonRef}
                 variant="ghost"
                 size="sm"
                 className={cn(
