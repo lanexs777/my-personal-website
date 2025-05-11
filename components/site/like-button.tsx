@@ -5,6 +5,7 @@ import { Heart } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
 
 interface LikeButtonProps {
     slug: string;
@@ -16,6 +17,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
     const [countValue, setCountValue] = useState(2);
+    const { theme } = useTheme();
 
     useEffect(() => {
         const channel = supabase
@@ -80,9 +82,11 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             
             {showCount && (
                 <div
-                    className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full 
-                             bg-black text-white rounded-full w-6 h-6 flex items-center justify-center 
-                             text-xs pointer-events-none"
+                    className={cn(
+                        "absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full",
+                        "w-6 h-6 flex items-center justify-center text-xs pointer-events-none rounded-full",
+                        theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    )}
                     style={{
                         animation: 'countBounce 2000ms forwards',
                     }}
