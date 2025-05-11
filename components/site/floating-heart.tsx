@@ -11,8 +11,8 @@ interface FloatingHeartProps {
 export function FloatingHeart({ x, y, onComplete }: FloatingHeartProps) {
     const [style, setStyle] = useState({
         position: 'fixed',
-        left: `${x}px`,
-        top: `${y}px`,
+        left: `${x - 8}px`, // Center the heart (16px width)
+        top: `${y - 8}px`, // Center the heart (16px height)
         transform: 'scale(1)',
         opacity: 1,
         pointerEvents: 'none',
@@ -22,19 +22,18 @@ export function FloatingHeart({ x, y, onComplete }: FloatingHeartProps) {
     useEffect(() => {
         // Generate random curve direction (left or right)
         const curveDirection = Math.random() > 0.5 ? 1 : -1;
-        const curveAmount = 40 + Math.random() * 20; // Reduced curve amount
+        const curveAmount = 40 + Math.random() * 20; // Random curve amount
 
-        // Start animation after a slightly longer delay
+        // Start animation after a delay
         const timeout = setTimeout(() => {
             setStyle(prev => ({
                 ...prev,
                 transform: `scale(1.2) translate(${curveDirection * curveAmount}px, -120px)`,
                 opacity: 0,
-                transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)', // Slower, smoother easing
+                transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
             }));
-        }, 100); // Increased initial delay
+        }, 100);
 
-        // Increased animation duration
         const cleanup = setTimeout(() => {
             onComplete();
         }, 1600);

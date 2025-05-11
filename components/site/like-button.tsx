@@ -41,13 +41,16 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         try {
             setIsLoading(true);
             
-            // Add floating heart at click position
-            const rect = event.currentTarget.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            
-            setHearts(prev => [...prev, { id: nextHeartId, x, y }]);
-            setNextHeartId(prev => prev + 1);
+            // Get the heart icon's position
+            const heartIcon = event.currentTarget.querySelector('svg');
+            if (heartIcon) {
+                const rect = heartIcon.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                
+                setHearts(prev => [...prev, { id: nextHeartId, x, y }]);
+                setNextHeartId(prev => prev + 1);
+            }
             
             const { error } = await supabase
                 .from('likes')
