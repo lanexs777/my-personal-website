@@ -25,17 +25,17 @@ export async function getNotes(): Promise<(Note | null)[]> {
         })
     );
 
-    // Get like counts for all notes
+    // Get all likes
     const { data: likes } = await supabase
         .from('likes')
-        .select('note_slug, count')
-        .select('*', { count: 'exact', head: true })
-        .group_by('note_slug');
+        .select('note_slug');
 
-    // Create a map of slug to like count
-    const likeCounts = new Map(
-        likes?.map(like => [like.note_slug, parseInt(like.count)]) || []
-    );
+    // Count likes for each note
+    const likeCounts = new Map();
+    likes?.forEach(like => {
+        const currentCount = likeCounts.get(like.note_slug) || 0;
+        likeCounts.set(like.note_slug, currentCount + 1);
+    });
 
     // Add like counts to notes
     const notesWithLikes = notes.map(note => {
