@@ -13,7 +13,6 @@ import {
     Headphones,
     Instagram,
     Linkedin,
-    Mail,
 } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -45,13 +44,6 @@ const socialLinks = [
         icon: Github,
         color: "bg-neutral-800",
         description: "Check out my code and open source contributions",
-    },
-    {
-        name: "Email",
-        url: "mailto:khyler5@gmail.com",
-        icon: Mail,
-        color: "bg-red-500",
-        description: "Reach out to me directly via email",
     },
 ];
 
@@ -94,7 +86,7 @@ export default function LinksPage() {
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         Connect with Me
                     </h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {socialLinks.map((link) => (
                             <a
                                 key={link.name}
@@ -103,7 +95,7 @@ export default function LinksPage() {
                                 rel="noopener noreferrer"
                                 className="block group"
                             >
-                                <div className="flex flex-col items-center border rounded-lg p-6 hover:border-primary transition-colors h-full">
+                                <div className="flex flex-col items-center border rounded-lg p-8 hover:border-primary transition-colors h-full">
                                     <div
                                         className={`${link.color} p-4 rounded-full text-white mb-4`}
                                     >
