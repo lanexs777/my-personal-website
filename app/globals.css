@@ -80,3 +80,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes countBounce {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -20px);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -20px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+}
