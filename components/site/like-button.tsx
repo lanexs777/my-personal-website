@@ -16,13 +16,14 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
-    const [clickCount, setClickCount] = useState(0);
     const { theme } = useTheme();
 
+    // Reset likes when slug changes
     useEffect(() => {
         setLikes(initialLikes);
-    }, [initialLikes]);
+    }, [initialLikes, slug]);
 
+    // Subscribe to real-time updates
     useEffect(() => {
         const channel = supabase
             .channel('likes')
@@ -54,10 +55,6 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
 
             if (error) throw error;
             
-            // Update local state immediately after successful insert
-            setLikes((prev) => prev + 1);
-            setClickCount((prev) => prev + 1);
-            
             // Show animation after successful insert
             requestAnimationFrame(() => {
                 setShowCount(true);
@@ -67,6 +64,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             console.error('Error liking note:', error);
         } finally {
             setIsLoading(false);
+            // Reset animation after 2 seconds
+            setTimeout(() => {
+                setShowCount(false);
+            }, 2000);
         }
     };
 
@@ -97,7 +98,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                         animation: 'countBounce 2000ms forwards',
                     }}
                 >
-                    +{clickCount}
+                    +1
                 </div>
             )}
         </div>
