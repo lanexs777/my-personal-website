@@ -16,7 +16,6 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
-    const [countValue, setCountValue] = useState(2);
     const { theme } = useTheme();
 
     useEffect(() => {
@@ -48,17 +47,18 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             setIsLoading(true);
             
             setShowCount(false);
-            setCountValue(prev => prev + 1);
-            
-            requestAnimationFrame(() => {
-                setShowCount(true);
-            });
             
             const { error } = await supabase
                 .from('likes')
                 .insert({ note_slug: slug });
 
             if (error) throw error;
+            
+            // Only show animation after successful insert
+            requestAnimationFrame(() => {
+                setShowCount(true);
+            });
+            
         } catch (error) {
             console.error('Error liking note:', error);
         } finally {
@@ -93,7 +93,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                         animation: 'countBounce 2000ms forwards',
                     }}
                 >
-                    +{countValue}
+                    +1
                 </div>
             )}
         </div>
