@@ -18,27 +18,15 @@ interface Triangle {
     color: string;
 }
 
-interface CountIndicator {
-    id: number;
-    count: number;
-}
-
 const COLORS = ['#FF5722', '#FFC107', '#2196F3', '#4CAF50', '#9C27B0'];
-
-const TRIANGLE_ANGLES = [
-    // Large triangles
-    0, 72, 144, 216, 288,
-    // Small triangles
-    36, 108, 180, 252, 324
-];
 
 export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
     const [triangles, setTriangles] = useState<Triangle[]>([]);
     const [nextTriangleId, setNextTriangleId] = useState(0);
-    const [countIndicators, setCountIndicators] = useState<CountIndicator[]>([]);
-    const [nextCountId, setNextCountId] = useState(0);
+    const [showCount, setShowCount] = useState(false);
+    const [countValue, setCountValue] = useState(1);
 
     useEffect(() => {
         const channel = supabase
@@ -59,30 +47,43 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     }, [slug]);
 
     const createTriangles = () => {
-        const newTriangles: Triangle[] = TRIANGLE_ANGLES.map((angle, i) => ({
-            id: nextTriangleId + i,
-            angle,
-            size: i < 5 ? 'large' : 'small',
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        }));
+        const newTriangles: Triangle[] = [];
+        // Create 5 large triangles
+        for (let i = 0; i < 5; i++) {
+            newTriangles.push({
+                id: nextTriangleId + i,
+                angle: (i * 72) + Math.random() * 10 - 5, // Add slight randomness
+                size: 'large',
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            });
+        }
+        // Create 5 small triangles
+        for (let i = 0; i < 5; i++) {
+            newTriangles.push({
+                id: nextTriangleId + i + 5,
+                angle: (i * 72 + 36) + Math.random() * 10 - 5, // Offset by 36 degrees
+                size: 'small',
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            });
+        }
         
         setTriangles(prev => [...prev, ...newTriangles]);
         setNextTriangleId(prev => prev + newTriangles.length);
         
         setTimeout(() => {
             setTriangles(prev => prev.filter(t => !newTriangles.includes(t)));
-        }, 1000);
+        }, 600);
     };
 
-    const createCountIndicator = () => {
-        const newIndicator = { id: nextCountId, count: 1 };
-        setCountIndicators(prev => [...prev, newIndicator]);
-        setNextCountId(prev => prev + 1);
+    const showCountIndicator = () => {
+        setShowCount(true);
+        setCountValue(prev => prev + 1);
         
-        // Remove the count indicator after a longer delay
+        // Reset after animation
         setTimeout(() => {
-            setCountIndicators(prev => prev.filter(c => c.id !== newIndicator.id));
-        }, 2000);
+            setShowCount(false);
+            setCountValue(1);
+        }, 1000);
     };
 
     const handleLike = async (event: React.MouseEvent) => {
@@ -91,7 +92,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         try {
             setIsLoading(true);
             createTriangles();
-            createCountIndicator();
+            showCountIndicator();
             
             const { error } = await supabase
                 .from('likes')
@@ -126,28 +127,28 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                     key={triangle.id}
                     className="absolute left-1/2 top-1/2 pointer-events-none"
                     style={{
-                        width: triangle.size === 'large' ? '8px' : '6px',
-                        height: triangle.size === 'large' ? '8px' : '6px',
+                        width: triangle.size === 'large' ? '12px' : '8px',
+                        height: triangle.size === 'large' ? '12px' : '8px',
                         backgroundColor: triangle.color,
                         clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                        transform: `translate(-50%, -50%) rotate(${triangle.angle}deg) translateY(-20px)`,
-                        animation: 'triangleFade 1s forwards',
-                        '--angle': `${triangle.angle}deg`,
-                    } as any}
+                        transform: `translate(-50%, -50%) rotate(${triangle.angle}deg)`,
+                        animation: 'trianglePop 600ms forwards',
+                        opacity: 0,
+                    }}
                 />
             ))}
             
-            {countIndicators.map((indicator) => (
+            {showCount && (
                 <div
-                    key={indicator.id}
-                    className="absolute left-1/2 -top-2 bg-black text-white rounded-full px-2 py-1 text-xs pointer-events-none"
+                    className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full 
+                             bg-black text-white rounded-full px-2 py-1 text-xs pointer-events-none"
                     style={{
-                        animation: 'countFloat 2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                        animation: 'countBounce 1000ms forwards',
                     }}
                 >
-                    +{indicator.count}
+                    +{countValue}
                 </div>
-            ))}
+            )}
         </div>
     );
 }
