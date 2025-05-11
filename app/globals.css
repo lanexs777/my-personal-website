@@ -80,3 +80,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes triangleFade {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--angle)) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateY(-20px);
+  }
+}
+
+@keyframes countFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) translateX(-50%);
+  }
+}

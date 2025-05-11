@@ -4,18 +4,34 @@ import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '../ui/button';
-import { FloatingHeart } from './floating-heart';
+import { cn } from '@/lib/utils';
 
 interface LikeButtonProps {
     slug: string;
     initialLikes: number;
 }
 
+interface Triangle {
+    id: number;
+    angle: number;
+    distance: number;
+    color: string;
+}
+
+interface CountIndicator {
+    id: number;
+    count: number;
+}
+
+const COLORS = ['#FFC107', '#FF5722', '#2196F3', '#4CAF50', '#9C27B0'];
+
 export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
-    const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
-    const [nextHeartId, setNextHeartId] = useState(0);
+    const [triangles, setTriangles] = useState<Triangle[]>([]);
+    const [nextTriangleId, setNextTriangleId] = useState(0);
+    const [countIndicators, setCountIndicators] = useState<CountIndicator[]>([]);
+    const [nextCountId, setNextCountId] = useState(0);
 
     useEffect(() => {
         const channel = supabase
@@ -25,7 +41,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 schema: 'public',
                 table: 'likes',
                 filter: `note_slug=eq.${slug}`,
-            }, (payload) => {
+            }, () => {
                 setLikes((prev) => prev + 1);
             })
             .subscribe();
@@ -35,22 +51,44 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         };
     }, [slug]);
 
+    const createTriangles = () => {
+        const newTriangles: Triangle[] = [];
+        const numTriangles = 8;
+        
+        for (let i = 0; i < numTriangles; i++) {
+            const angle = (i * 360) / numTriangles + Math.random() * 30 - 15;
+            newTriangles.push({
+                id: nextTriangleId + i,
+                angle,
+                distance: 0,
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            });
+        }
+        
+        setTriangles(prev => [...prev, ...newTriangles]);
+        setNextTriangleId(prev => prev + numTriangles);
+        
+        setTimeout(() => {
+            setTriangles(prev => prev.filter(t => !newTriangles.includes(t)));
+        }, 1000);
+    };
+
+    const createCountIndicator = () => {
+        setCountIndicators(prev => [...prev, { id: nextCountId, count: 1 }]);
+        setNextCountId(prev => prev + 1);
+        
+        setTimeout(() => {
+            setCountIndicators(prev => prev.filter(c => c.id !== nextCountId));
+        }, 1000);
+    };
+
     const handleLike = async (event: React.MouseEvent) => {
         if (isLoading) return;
         
         try {
             setIsLoading(true);
-            
-            // Get the heart icon's position
-            const heartIcon = event.currentTarget.querySelector('svg');
-            if (heartIcon) {
-                const rect = heartIcon.getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                
-                setHearts(prev => [...prev, { id: nextHeartId, x, y }]);
-                setNextHeartId(prev => prev + 1);
-            }
+            createTriangles();
+            createCountIndicator();
             
             const { error } = await supabase
                 .from('likes')
@@ -64,30 +102,47 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         }
     };
 
-    const removeHeart = (id: number) => {
-        setHearts(prev => prev.filter(heart => heart.id !== id));
-    };
-
     return (
-        <>
+        <div className="relative">
             <Button
                 variant="ghost"
                 size="sm"
-                className="flex items-center gap-2 relative"
+                className={cn(
+                    "flex items-center gap-2 relative",
+                    isLoading && "cursor-not-allowed"
+                )}
                 onClick={handleLike}
                 disabled={isLoading}
             >
                 <Heart className="h-4 w-4" />
                 <span>{likes}</span>
             </Button>
-            {hearts.map(heart => (
-                <FloatingHeart
-                    key={heart.id}
-                    x={heart.x}
-                    y={heart.y}
-                    onComplete={() => removeHeart(heart.id)}
+            
+            {triangles.map((triangle) => (
+                <div
+                    key={triangle.id}
+                    className="absolute left-1/2 top-1/2 w-2 h-2 pointer-events-none"
+                    style={{
+                        transform: `rotate(${triangle.angle}deg) translateY(${triangle.distance}px)`,
+                        transition: 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                        backgroundColor: triangle.color,
+                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                        animation: 'triangleFade 1s forwards',
+                    }}
                 />
             ))}
-        </>
+            
+            {countIndicators.map((indicator) => (
+                <div
+                    key={indicator.id}
+                    className="absolute left-1/2 top-0 -translate-x-1/2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs pointer-events-none"
+                    style={{
+                        animation: 'countFloat 1s forwards',
+                    }}
+                >
+                    +{indicator.count}
+                </div>
+            ))}
+        </div>
     );
 }
