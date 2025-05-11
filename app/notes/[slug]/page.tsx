@@ -74,8 +74,6 @@ export default async function NotePage({ params }: NotePageProps) {
                         </span>
                     </div>
                 </div>
-
-                {/* ✅ This is now JSX from compileMDX */}
                 {note.content}
             </article>
         </div>
