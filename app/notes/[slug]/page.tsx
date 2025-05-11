@@ -74,9 +74,16 @@ export default async function NotePage({ params }: NotePageProps) {
                             {formatDate(note.date)}
                         </time>
                         <span>•</span>
-                        <span className="bg-secondary px-2 py-1 rounded-md text-xs">
-                            #{note.category}
-                        </span>
+                        <div className="flex flex-wrap gap-2">
+                            {note.category.map((cat) => (
+                                <span
+                                    key={cat}
+                                    className="bg-secondary px-2 py-1 rounded-md text-xs"
+                                >
+                                    #{cat}
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 </div>
                 {note.content}

@@ -30,10 +30,15 @@ export function NoteCard({ note }: NoteCardProps) {
                 <p className="mt-2 text-muted-foreground line-clamp-3 flex-grow">
                     {note.excerpt}
                 </p>
-                <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                    <span className="bg-secondary px-2 py-1 rounded-md">
-                        #{note.category}
-                    </span>
+                <div className="mt-4 flex flex-wrap gap-2">
+                    {note.category.map((cat) => (
+                        <span
+                            key={cat}
+                            className="bg-secondary px-2 py-1 rounded-md text-sm text-muted-foreground"
+                        >
+                            #{cat}
+                        </span>
+                    ))}
                 </div>
             </div>
         </Link>
