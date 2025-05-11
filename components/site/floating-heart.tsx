@@ -11,8 +11,8 @@ interface FloatingHeartProps {
 export function FloatingHeart({ x, y, onComplete }: FloatingHeartProps) {
     const [style, setStyle] = useState({
         position: 'fixed',
-        left: `${x - 8}px`, // Center the heart (16px width)
-        top: `${y - 8}px`, // Center the heart (16px height)
+        left: `${x - 10}px`, // Center the heart (20px width)
+        top: `${y - 10}px`, // Center the heart (20px height)
         transform: 'scale(1)',
         opacity: 1,
         pointerEvents: 'none',
@@ -47,8 +47,8 @@ export function FloatingHeart({ x, y, onComplete }: FloatingHeartProps) {
     return (
         <div style={style}>
             <svg
-                width="16"
-                height="16"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 style={{ color: '#ff4444' }}
