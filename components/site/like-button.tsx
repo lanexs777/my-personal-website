@@ -74,7 +74,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 onClick={handleLike}
                 disabled={isLoading}
             >
-                <Heart className="h-4 w-4" />
+                <Heart className={`h-4 w-4 ${likes > 0 ? 'fill-current text-red-500' : ''}`} />
                 <span>{likes}</span>
             </Button>
             {hearts.map(heart => (
