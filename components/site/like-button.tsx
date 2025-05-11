@@ -15,7 +15,6 @@ export function LikeButton({ slug }: LikeButtonProps) {
     const [likes, setLikes] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
-    const [countValue, setCountValue] = useState(2);
     const { theme } = useTheme();
 
     useEffect(() => {
@@ -57,7 +56,6 @@ export function LikeButton({ slug }: LikeButtonProps) {
             
             // Reset animation by removing and re-adding the element
             setShowCount(false);
-            setCountValue(prev => prev + 1);
             
             // Force a reflow to ensure the animation restarts
             requestAnimationFrame(() => {
@@ -103,7 +101,7 @@ export function LikeButton({ slug }: LikeButtonProps) {
                         animation: 'countBounce 2000ms forwards',
                     }}
                 >
-                    +{countValue}
+                    +1
                 </div>
             )}
         </div>
