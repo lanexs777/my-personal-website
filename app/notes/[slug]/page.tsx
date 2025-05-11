@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { LikeButton } from "@/components/site/like-button";
+import { supabase } from "@/lib/supabase";
 
 interface NotePageProps {
     params: {
@@ -46,6 +48,13 @@ export default async function NotePage({ params }: NotePageProps) {
         notFound();
     }
 
+    const { count } = await supabase
+        .from('likes')
+        .select('*', { count: 'exact' })
+        .eq('note_slug', params.slug);
+
+    const likes = count || 0;
+
     return (
         <div className="container px-4 md:px-6 py-10 max-w-3xl mx-auto">
             <Button
@@ -62,9 +71,12 @@ export default async function NotePage({ params }: NotePageProps) {
 
             <article className="prose prose-neutral dark:prose-invert max-w-none">
                 <div className="mb-8 space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl !mb-2">
-                        {note.title}
-                    </h1>
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl !mb-2">
+                            {note.title}
+                        </h1>
+                        <LikeButton slug={params.slug} initialLikes={likes} />
+                    </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
                         <time dateTime={note.date}>
                             {formatDate(note.date)}
