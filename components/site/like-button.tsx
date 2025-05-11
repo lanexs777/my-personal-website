@@ -9,17 +9,29 @@ import { useTheme } from 'next-themes';
 
 interface LikeButtonProps {
     slug: string;
-    initialLikes: number;
 }
 
-export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
-    const [likes, setLikes] = useState(initialLikes);
+export function LikeButton({ slug }: LikeButtonProps) {
+    const [likes, setLikes] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
-    const [countValue, setCountValue] = useState(2);
-    const { theme } = useTheme();
+    const [userClicks, setUserClicks] = useState(0);
+    const { theme, systemTheme } = useTheme();
 
     useEffect(() => {
+        // Fetch initial like count
+        const fetchLikes = async () => {
+            const { count } = await supabase
+                .from('likes')
+                .select('*', { count: 'exact' })
+                .eq('note_slug', slug);
+            
+            setLikes(count || 0);
+        };
+
+        fetchLikes();
+
+        // Set up realtime subscription
         const channel = supabase
             .channel('likes')
             .on('postgres_changes', {
@@ -45,7 +57,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             
             // Reset animation by removing and re-adding the element
             setShowCount(false);
-            setCountValue(prev => prev + 1);
+            setUserClicks(prev => prev + 1);
             
             // Force a reflow to ensure the animation restarts
             requestAnimationFrame(() => {
@@ -63,6 +75,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             setIsLoading(false);
         }
     };
+
+    // Determine the current effective theme
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    const isDark = currentTheme === 'dark';
 
     return (
         <div className="relative">
@@ -85,13 +101,13 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                     className={cn(
                         "absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full",
                         "w-6 h-6 flex items-center justify-center text-xs pointer-events-none rounded-full",
-                        theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                        isDark ? 'bg-white text-black' : 'bg-black text-white'
                     )}
                     style={{
                         animation: 'countBounce 2000ms forwards',
                     }}
                 >
-                    +{countValue}
+                    +{userClicks}
                 </div>
             )}
         </div>
