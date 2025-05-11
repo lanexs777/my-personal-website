@@ -23,30 +23,32 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 table: 'likes',
                 filter: `note_slug=eq.${slug}`,
             }, () => {
-                setLikes((prev) => prev + 1);
+                // Only update if the change is not from our own action
+                if (!isLoading) {
+                    setLikes((prev) => prev + 1);
+                }
             })
             .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [slug]);
+    }, [slug, isLoading]);
 
     const handleLike = async () => {
+        if (isLoading) return;
+        
         try {
             setIsLoading(true);
-            // Optimistically update the UI
-            setLikes((prev) => prev + 1);
             
             const { error } = await supabase
                 .from('likes')
                 .insert({ note_slug: slug });
 
-            if (error) {
-                // Revert the optimistic update if there's an error
-                setLikes((prev) => prev - 1);
-                throw error;
-            }
+            if (error) throw error;
+
+            // Optimistically update the UI
+            setLikes((prev) => prev + 1);
         } catch (error) {
             console.error('Error liking note:', error);
         } finally {
