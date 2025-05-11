@@ -45,7 +45,6 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         
         try {
             setIsLoading(true);
-            
             setShowCount(false);
             
             const { error } = await supabase
@@ -54,7 +53,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
 
             if (error) throw error;
             
-            // Only show animation after successful insert
+            // Update local state immediately after successful insert
+            setLikes((prev) => prev + 1);
+            
+            // Show animation after successful insert
             requestAnimationFrame(() => {
                 setShowCount(true);
             });
