@@ -16,6 +16,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
     const [countValue, setCountValue] = useState(2);
+    const [animationTimeout, setAnimationTimeout] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const channel = supabase
@@ -36,15 +37,20 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     }, [slug]);
 
     const showCountIndicator = () => {
-        if (!showCount) {
-            setShowCount(true);
-            setCountValue(prev => prev + 1);
-            
-            // Reset after animation with longer delay
-            setTimeout(() => {
-                setShowCount(false);
-            }, 2000); // Increased to 2 seconds
+        // Clear existing timeout if it exists
+        if (animationTimeout) {
+            clearTimeout(animationTimeout);
         }
+
+        setShowCount(true);
+        setCountValue(prev => prev + 1);
+        
+        // Set new timeout
+        const timeout = setTimeout(() => {
+            setShowCount(false);
+        }, 2000);
+        
+        setAnimationTimeout(timeout);
     };
 
     const handleLike = async (event: React.MouseEvent) => {
