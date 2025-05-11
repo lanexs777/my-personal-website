@@ -16,6 +16,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
+    const [clickCount, setClickCount] = useState(0);
     const { theme } = useTheme();
 
     useEffect(() => {
@@ -55,6 +56,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             
             // Update local state immediately after successful insert
             setLikes((prev) => prev + 1);
+            setClickCount((prev) => prev + 1);
             
             // Show animation after successful insert
             requestAnimationFrame(() => {
@@ -95,7 +97,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                         animation: 'countBounce 2000ms forwards',
                     }}
                 >
-                    +1
+                    +{clickCount}
                 </div>
             )}
         </div>
