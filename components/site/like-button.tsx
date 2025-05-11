@@ -15,7 +15,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
-    const [countValue, setCountValue] = useState(1);
+    const [countValue, setCountValue] = useState(2);
 
     useEffect(() => {
         const channel = supabase
@@ -36,14 +36,15 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     }, [slug]);
 
     const showCountIndicator = () => {
-        setShowCount(true);
-        setCountValue(prev => prev + 1);
-        
-        // Reset after animation
-        setTimeout(() => {
-            setShowCount(false);
-            setCountValue(1);
-        }, 1000);
+        if (!showCount) {
+            setShowCount(true);
+            setCountValue(prev => prev + 1);
+            
+            // Reset after animation with longer delay
+            setTimeout(() => {
+                setShowCount(false);
+            }, 2000); // Increased to 2 seconds
+        }
     };
 
     const handleLike = async (event: React.MouseEvent) => {
@@ -84,9 +85,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             {showCount && (
                 <div
                     className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full 
-                             bg-black text-white rounded-full px-2 py-1 text-xs pointer-events-none"
+                             bg-black text-white rounded-full w-6 h-6 flex items-center justify-center 
+                             text-xs pointer-events-none"
                     style={{
-                        animation: 'countBounce 1000ms forwards',
+                        animation: 'countBounce 2000ms forwards',
                     }}
                 >
                     +{countValue}
