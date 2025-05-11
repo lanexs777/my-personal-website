@@ -1,9 +1,18 @@
+import { NoteCard } from "@/components/site/note-card";
 import { Button } from "@/components/ui/button";
+import { getNotes } from "@/lib/mdx";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+    const notes = await getNotes();
+    const featuredNotes = notes
+        .filter((note): note is NonNullable<typeof note> => note !== null)
+        .slice(0, 3);
+
     return (
         <div className="container px-4 md:px-6 py-10 md:py-16 max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
@@ -74,33 +83,8 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[1, 2, 3].map((i) => (
-                        <Link
-                            key={i}
-                            href={`/notes/note-${i}`}
-                            className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
-                            tabIndex={0}
-                        >
-                            <div className="group relative overflow-hidden rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-all duration-300 hover:shadow-md">
-                                <div className="mb-4 text-sm text-muted-foreground">
-                                    {new Date().toLocaleDateString()}
-                                </div>
-                                <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
-                                    Example Note Title {i}
-                                </h3>
-                                <p className="mt-2 text-muted-foreground line-clamp-3">
-                                    This is a brief description of what this
-                                    note contains. It could be about technology,
-                                    personal thoughts, or anything else I find
-                                    interesting.
-                                </p>
-                                <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                                    <span className="bg-secondary px-2 py-1 rounded-md">
-                                        #category
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
+                    {featuredNotes.map((note) => (
+                        <NoteCard key={note.slug} note={note} />
                     ))}
                 </div>
             </section>
@@ -127,8 +111,8 @@ export default function Home() {
                     </p>
                     <br></br>
                     <p>
-                        Whether it’s optimizing a web app, trying a new ramen
-                        spot, or shaving a few seconds off my mile time, I’m
+                        Whether it's optimizing a web app, trying a new ramen
+                        spot, or shaving a few seconds off my mile time, I'm
                         always looking for ways to grow, connect, and create.
                     </p>
                 </div>

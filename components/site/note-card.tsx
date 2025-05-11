@@ -1,14 +1,9 @@
+import { Note } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 interface NoteCardProps {
-    note: {
-        slug: string;
-        title: string;
-        excerpt: string;
-        date: string;
-        category: string;
-    };
+    note: Note;
 }
 
 export function NoteCard({ note }: NoteCardProps) {
