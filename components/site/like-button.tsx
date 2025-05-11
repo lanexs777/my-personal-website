@@ -13,6 +13,7 @@ interface LikeButtonProps {
 export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
+    const [hasLiked, setHasLiked] = useState(false);
 
     useEffect(() => {
         const channel = supabase
@@ -22,9 +23,9 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 schema: 'public',
                 table: 'likes',
                 filter: `note_slug=eq.${slug}`,
-            }, () => {
-                // Only update if the change is not from our own action
-                if (!isLoading) {
+            }, (payload) => {
+                // Only update if we didn't trigger this change
+                if (!hasLiked) {
                     setLikes((prev) => prev + 1);
                 }
             })
@@ -33,10 +34,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [slug, isLoading]);
+    }, [slug, hasLiked]);
 
     const handleLike = async () => {
-        if (isLoading) return;
+        if (isLoading || hasLiked) return;
         
         try {
             setIsLoading(true);
@@ -47,7 +48,8 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
 
             if (error) throw error;
 
-            // Optimistically update the UI
+            // Mark as liked and update count locally
+            setHasLiked(true);
             setLikes((prev) => prev + 1);
         } catch (error) {
             console.error('Error liking note:', error);
@@ -62,9 +64,9 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             size="sm"
             className="flex items-center gap-2"
             onClick={handleLike}
-            disabled={isLoading}
+            disabled={isLoading || hasLiked}
         >
-            <Heart className="h-4 w-4" />
+            <Heart className={`h-4 w-4 ${hasLiked ? 'fill-current' : ''}`} />
             <span>{likes}</span>
         </Button>
     );
