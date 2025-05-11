@@ -22,7 +22,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 schema: 'public',
                 table: 'likes',
                 filter: `note_slug=eq.${slug}`,
-            }, () => {
+            }, (payload) => {
                 setLikes((prev) => prev + 1);
             })
             .subscribe();
@@ -44,8 +44,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
 
             if (error) throw error;
 
-            // Update count locally
-            setLikes((prev) => prev + 1);
+            // Remove local update - rely on subscription
         } catch (error) {
             console.error('Error liking note:', error);
         } finally {
