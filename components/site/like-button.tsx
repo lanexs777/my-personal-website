@@ -20,6 +20,10 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const { theme } = useTheme();
 
     useEffect(() => {
+        setLikes(initialLikes);
+    }, [initialLikes]);
+
+    useEffect(() => {
         const channel = supabase
             .channel('likes')
             .on('postgres_changes', {
@@ -43,11 +47,9 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
         try {
             setIsLoading(true);
             
-            // Reset animation by removing and re-adding the element
             setShowCount(false);
             setCountValue(prev => prev + 1);
             
-            // Force a reflow to ensure the animation restarts
             requestAnimationFrame(() => {
                 setShowCount(true);
             });

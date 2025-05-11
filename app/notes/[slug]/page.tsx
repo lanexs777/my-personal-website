@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LikeButton } from "@/components/site/like-button";
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from '@/lib/supabase-server';
 
 interface NotePageProps {
     params: {
@@ -41,6 +41,8 @@ export async function generateMetadata({
     };
 }
 
+export const revalidate = 0;
+
 export default async function NotePage({ params }: NotePageProps) {
     const note = await getNote(params.slug);
 
@@ -48,6 +50,7 @@ export default async function NotePage({ params }: NotePageProps) {
         notFound();
     }
 
+    const supabase = createServerClient();
     const { count } = await supabase
         .from('likes')
         .select('*', { count: 'exact' })
