@@ -22,22 +22,22 @@ export function FloatingHeart({ x, y, onComplete }: FloatingHeartProps) {
     useEffect(() => {
         // Generate random curve direction (left or right)
         const curveDirection = Math.random() > 0.5 ? 1 : -1;
-        const curveAmount = 50 + Math.random() * 30; // Random curve amount between 50-80px
+        const curveAmount = 40 + Math.random() * 20; // Reduced curve amount
 
-        // Start animation after a small delay
+        // Start animation after a slightly longer delay
         const timeout = setTimeout(() => {
             setStyle(prev => ({
                 ...prev,
-                transform: `scale(1.5) translate(${curveDirection * curveAmount}px, -100px)`,
+                transform: `scale(1.2) translate(${curveDirection * curveAmount}px, -120px)`,
                 opacity: 0,
-                transition: 'all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                transition: 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)', // Slower, smoother easing
             }));
-        }, 50);
+        }, 100); // Increased initial delay
 
-        // Remove component after animation
+        // Increased animation duration
         const cleanup = setTimeout(() => {
             onComplete();
-        }, 850);
+        }, 1600);
 
         return () => {
             clearTimeout(timeout);
