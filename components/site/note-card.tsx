@@ -1,5 +1,6 @@
 import { Note } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
+import { Heart } from "lucide-react";
 import Link from "next/link";
 
 interface NoteCardProps {
@@ -14,8 +15,14 @@ export function NoteCard({ note }: NoteCardProps) {
             tabIndex={0}
         >
             <div className="group relative overflow-hidden rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-all duration-300 hover:shadow-md h-full flex flex-col">
-                <div className="mb-4 text-sm text-muted-foreground">
-                    {formatDate(note.date)}
+                <div className="flex justify-between items-start mb-4">
+                    <time className="text-sm text-muted-foreground">
+                        {formatDate(note.date)}
+                    </time>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Heart className="h-4 w-4" />
+                        <span>{note.likeCount || 0}</span>
+                    </div>
                 </div>
                 <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
                     {note.title}

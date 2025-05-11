@@ -2,6 +2,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
+import { supabase } from "./supabase";
 
 const notesDirectory = path.join(process.cwd(), "content/notes");
 
@@ -11,7 +12,8 @@ export interface Note {
     date: string;
     category: string;
     excerpt: string;
-    content: JSX.Element; // ⬅️ content is now JSX!
+    content: JSX.Element;
+    likeCount?: number;
 }
 
 export async function getNotes(): Promise<(Note | null)[]> {
@@ -23,7 +25,35 @@ export async function getNotes(): Promise<(Note | null)[]> {
         })
     );
 
-    return notes;
+    // Get all likes
+    const { data: likes } = await supabase
+        .from('likes')
+        .select('note_slug');
+
+    // Count likes for each note
+    const likeCounts = new Map();
+    likes?.forEach(like => {
+        const currentCount = likeCounts.get(like.note_slug) || 0;
+        likeCounts.set(like.note_slug, currentCount + 1);
+    });
+
+    // Add like counts to notes
+    const notesWithLikes = notes.map(note => {
+        if (!note) return null;
+        return {
+            ...note,
+            likeCount: likeCounts.get(note.slug) || 0
+        };
+    });
+
+    // Sort by like count (descending) and then by date (descending)
+    return notesWithLikes.sort((a, b) => {
+        if (!a || !b) return 0;
+        if (a.likeCount !== b.likeCount) {
+            return (b.likeCount || 0) - (a.likeCount || 0);
+        }
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 }
 
 export async function getNote(slug: string): Promise<Note | null> {
@@ -39,12 +69,19 @@ export async function getNote(slug: string): Promise<Note | null> {
         options: { parseFrontmatter: false },
     });
 
+    // Get like count for this note
+    const { count } = await supabase
+        .from('likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('note_slug', slug);
+
     return {
         slug,
-        content: compiled.content, // now JSX
+        content: compiled.content,
         title: data.title,
         date: data.date,
         category: data.category,
         excerpt: data.excerpt,
+        likeCount: count || 0
     };
 }

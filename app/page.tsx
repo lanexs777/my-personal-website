@@ -7,8 +7,15 @@ import Link from "next/link";
 
 export default async function Home() {
     const notes = await getNotes();
-    const featuredNotes = notes
-        .filter((note): note is NonNullable<typeof note> => note !== null)
+    const validNotes = notes
+        .filter((note): note is NonNullable<typeof note> => note !== null);
+    
+    // Get featured notes (top 3 by likes)
+    const featuredNotes = validNotes.slice(0, 3);
+    
+    // Get recent notes (latest 3 by date)
+    const recentNotes = [...validNotes]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 3);
 
     return (
@@ -82,6 +89,40 @@ export default async function Home() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {featuredNotes.map((note) => (
+                        <NoteCard key={note.slug} note={note} />
+                    ))}
+                </div>
+            </section>
+
+            {/* Recent Notes Section */}
+            <section
+                className="mt-24 space-y-8"
+                aria-labelledby="recent-notes-heading"
+            >
+                <div className="flex items-center justify-between">
+                    <h2
+                        id="recent-notes-heading"
+                        className="text-3xl font-bold tracking-tight"
+                    >
+                        Recent Notes
+                    </h2>
+                    <Button variant="ghost" asChild>
+                        <Link
+                            href="/notes"
+                            className="flex items-center gap-1"
+                            tabIndex={0}
+                        >
+                            View all{" "}
+                            <ArrowRight
+                                className="h-4 w-4"
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {recentNotes.map((note) => (
                         <NoteCard key={note.slug} note={note} />
                     ))}
                 </div>
