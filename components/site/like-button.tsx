@@ -13,7 +13,6 @@ interface LikeButtonProps {
 export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
     const [likes, setLikes] = useState(initialLikes);
     const [isLoading, setIsLoading] = useState(false);
-    const [hasLiked, setHasLiked] = useState(false);
 
     useEffect(() => {
         const channel = supabase
@@ -23,21 +22,18 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
                 schema: 'public',
                 table: 'likes',
                 filter: `note_slug=eq.${slug}`,
-            }, (payload) => {
-                // Only update if we didn't trigger this change
-                if (!hasLiked) {
-                    setLikes((prev) => prev + 1);
-                }
+            }, () => {
+                setLikes((prev) => prev + 1);
             })
             .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [slug, hasLiked]);
+    }, [slug]);
 
     const handleLike = async () => {
-        if (isLoading || hasLiked) return;
+        if (isLoading) return;
         
         try {
             setIsLoading(true);
@@ -48,8 +44,7 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
 
             if (error) throw error;
 
-            // Mark as liked and update count locally
-            setHasLiked(true);
+            // Update count locally
             setLikes((prev) => prev + 1);
         } catch (error) {
             console.error('Error liking note:', error);
@@ -64,9 +59,9 @@ export function LikeButton({ slug, initialLikes }: LikeButtonProps) {
             size="sm"
             className="flex items-center gap-2"
             onClick={handleLike}
-            disabled={isLoading || hasLiked}
+            disabled={isLoading}
         >
-            <Heart className={`h-4 w-4 ${hasLiked ? 'fill-current' : ''}`} />
+            <Heart className="h-4 w-4" />
             <span>{likes}</span>
         </Button>
     );
