@@ -53,7 +53,14 @@ export default async function Home() {
                             src="/images/frog.png"
                             alt="Profile picture showing a pixel art frog on a rubber duck"
                             fill
-                            className="object-contain transition-transform duration-500 hover:scale-105"
+                            className="object-contain transition-transform duration-500 hover:scale-105 block dark:hidden"
+                            priority
+                        />
+                        <Image
+                            src="/images/frog_dark.png"
+                            alt="Profile picture showing a pixel art frog on a rubber duck (dark version)"
+                            fill
+                            className="object-contain transition-transform duration-500 hover:scale-105 hidden dark:block"
                             priority
                         />
                     </div>

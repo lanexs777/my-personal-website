@@ -13,7 +13,6 @@ import {
     Headphones,
     Instagram,
     Linkedin,
-    Twitter,
 } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -27,25 +26,19 @@ export const metadata: Metadata = {
 const socialLinks = [
     {
         name: "Instagram",
-        url: "https://instagram.com/username",
+        url: "https://www.instagram.com/khyler5/",
         icon: Instagram,
         color: "bg-pink-500",
     },
     {
-        name: "Twitter",
-        url: "https://twitter.com/username",
-        icon: Twitter,
-        color: "bg-blue-500",
-    },
-    {
         name: "LinkedIn",
-        url: "https://linkedin.com/in/username",
+        url: "https://www.linkedin.com/in/khyler-lin-373a2215b/",
         icon: Linkedin,
         color: "bg-blue-700",
     },
     {
         name: "GitHub",
-        url: "https://github.com/username",
+        url: "https://github.com/lanexs777",
         icon: Github,
         color: "bg-neutral-800",
     },
