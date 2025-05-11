@@ -81,17 +81,6 @@
   }
 }
 
-@keyframes trianglePop {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-20px);
-  }
-}
-
 @keyframes countBounce {
   0% {
     opacity: 0;
