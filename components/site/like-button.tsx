@@ -16,7 +16,7 @@ export function LikeButton({ slug }: LikeButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
     const [userClicks, setUserClicks] = useState(0);
-    const { theme } = useTheme();
+    const { theme, systemTheme } = useTheme();
 
     useEffect(() => {
         // Fetch initial like count
@@ -76,6 +76,10 @@ export function LikeButton({ slug }: LikeButtonProps) {
         }
     };
 
+    // Determine the current effective theme
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    const isDark = currentTheme === 'dark';
+
     return (
         <div className="relative">
             <Button
@@ -97,7 +101,7 @@ export function LikeButton({ slug }: LikeButtonProps) {
                     className={cn(
                         "absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full",
                         "w-6 h-6 flex items-center justify-center text-xs pointer-events-none rounded-full",
-                        theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                        isDark ? 'bg-white text-black' : 'bg-black text-white'
                     )}
                     style={{
                         animation: 'countBounce 2000ms forwards',
