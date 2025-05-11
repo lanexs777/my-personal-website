@@ -50,7 +50,8 @@ export function LikeButton({ slug }: LikeButtonProps) {
         };
     }, [slug]);
 
-    const handleLike = async (event: React.MouseEvent) => {
+    const handleLike = async (event: React.MouseEvent | React.KeyboardEvent) => {
+        event.preventDefault();
         if (isLoading) return;
         
         try {
@@ -95,6 +96,11 @@ export function LikeButton({ slug }: LikeButtonProps) {
                     isLoading && "cursor-not-allowed"
                 )}
                 onClick={handleLike}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        handleLike(e);
+                    }
+                }}
                 disabled={isLoading}
             >
                 <Heart className="h-4 w-4" />
