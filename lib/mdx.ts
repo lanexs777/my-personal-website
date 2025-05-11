@@ -10,7 +10,7 @@ export interface Note {
     slug: string;
     title: string;
     date: string;
-    category: string;
+    category: string[];
     excerpt: string;
     content: JSX.Element;
     likeCount?: number;
@@ -75,12 +75,15 @@ export async function getNote(slug: string): Promise<Note | null> {
         .select('*', { count: 'exact', head: true })
         .eq('note_slug', slug);
 
+    // Convert category to array if it's a string
+    const categories = Array.isArray(data.category) ? data.category : [data.category];
+
     return {
         slug,
         content: compiled.content,
         title: data.title,
         date: data.date,
-        category: data.category,
+        category: categories,
         excerpt: data.excerpt,
         likeCount: count || 0
     };
