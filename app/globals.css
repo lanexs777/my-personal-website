@@ -44,6 +44,23 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
+  [data-font="inter"] {
+    font-family: var(--font-inter);
+  }
+
+  [data-font="jetbrains"] {
+    font-family: var(--font-jetbrains-mono);
+  }
+
+  [data-font="consolas"] {
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  }
+
+  [data-font="comic"] {
+    font-family: "Comic Mono", "Comic Sans MS", cursive;
+  }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
