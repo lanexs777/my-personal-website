@@ -1,13 +1,18 @@
+'use client';
+
 import { Note } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import { useNoteLikes } from "@/hooks/use-note-likes";
 
 interface NoteCardProps {
     note: Note;
 }
 
 export function NoteCard({ note }: NoteCardProps) {
+    const likes = useNoteLikes(note.slug);
+    
     return (
         <Link
             href={`/notes/${note.slug}`}
@@ -21,7 +26,7 @@ export function NoteCard({ note }: NoteCardProps) {
                     </time>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Heart className="h-4 w-4" />
-                        <span>{note.likeCount || 0}</span>
+                        <span>{likes}</span>
                     </div>
                 </div>
                 <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
