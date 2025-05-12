@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { FontToggle } from "./font-toggle";
 
 const links = [
     { href: "/", label: "Home" },
@@ -59,6 +60,7 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center justify-end space-x-4">
+                    <FontToggle />
                     <ThemeToggle />
 
                     <Button
