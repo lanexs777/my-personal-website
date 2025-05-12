@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { FontType } from 'lucide-react';
+import { Type as FontType } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
