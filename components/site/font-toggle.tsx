@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { Type } from 'lucide-react';
 import { useFont } from '@/components/providers/font-provider';
 
 import { Button } from '@/components/ui/button';
@@ -19,7 +18,7 @@ export function FontToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-          <Type className="h-[1.2rem] w-[1.2rem]" />
+          <span className="text-lg font-semibold">Aa</span>
           <span className="sr-only">Toggle font</span>
         </Button>
       </DropdownMenuTrigger>
