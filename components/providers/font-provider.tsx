@@ -1,9 +1,44 @@
 'use client';
 
-import * as React from 'react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { type ThemeProviderProps } from 'next-themes/dist/types';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export function FontProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider attribute="data-font" defaultTheme="inter" {...props}>{children}</NextThemesProvider>;
+type Font = 'inter' | 'jetbrains' | 'consolas' | 'comic';
+
+interface FontContextType {
+  font: Font;
+  setFont: (font: Font) => void;
+}
+
+const FontContext = createContext<FontContextType | undefined>(undefined);
+
+export function FontProvider({ children }: { children: React.ReactNode }) {
+  const [font, setFont] = useState<Font>('inter');
+
+  useEffect(() => {
+    // Load saved font preference
+    const savedFont = localStorage.getItem('font') as Font;
+    if (savedFont) {
+      setFont(savedFont);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save font preference and update document
+    localStorage.setItem('font', font);
+    document.body.dataset.font = font;
+  }, [font]);
+
+  return (
+    <FontContext.Provider value={{ font, setFont }}>
+      {children}
+    </FontContext.Provider>
+  );
+}
+
+export function useFont() {
+  const context = useContext(FontContext);
+  if (context === undefined) {
+    throw new Error('useFont must be used within a FontProvider');
+  }
+  return context;
 }

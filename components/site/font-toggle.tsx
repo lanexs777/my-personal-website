@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Type } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { useFont } from '@/components/providers/font-provider';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function FontToggle() {
-  const { setTheme: setFont, theme: font } = useTheme();
+  const { font, setFont } = useFont();
 
   return (
     <DropdownMenu>
