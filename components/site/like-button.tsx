@@ -13,7 +13,6 @@ interface LikeButtonProps {
 
 export function LikeButton({ slug }: LikeButtonProps) {
     const [likes, setLikes] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
     const [showCount, setShowCount] = useState(false);
     const [userClicks, setUserClicks] = useState(0);
     const { theme, systemTheme } = useTheme();
@@ -49,21 +48,19 @@ export function LikeButton({ slug }: LikeButtonProps) {
         };
     }, [slug]);
 
-    const handleLike = async (event: React.MouseEvent) => {
-        if (isLoading) return;
+    const handleLike = async (event: React.MouseEvent | React.KeyboardEvent) => {
+        event.preventDefault();
+        
+        // Reset animation by removing and re-adding the element
+        setShowCount(false);
+        setUserClicks(prev => prev + 1);
+        
+        // Force a reflow to ensure the animation restarts
+        requestAnimationFrame(() => {
+            setShowCount(true);
+        });
         
         try {
-            setIsLoading(true);
-            
-            // Reset animation by removing and re-adding the element
-            setShowCount(false);
-            setUserClicks(prev => prev + 1);
-            
-            // Force a reflow to ensure the animation restarts
-            requestAnimationFrame(() => {
-                setShowCount(true);
-            });
-            
             const { error } = await supabase
                 .from('likes')
                 .insert({ note_slug: slug });
@@ -71,8 +68,6 @@ export function LikeButton({ slug }: LikeButtonProps) {
             if (error) throw error;
         } catch (error) {
             console.error('Error liking note:', error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -85,12 +80,13 @@ export function LikeButton({ slug }: LikeButtonProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                className={cn(
-                    "flex items-center gap-2 relative",
-                    isLoading && "cursor-not-allowed"
-                )}
+                className="flex items-center gap-2 relative"
                 onClick={handleLike}
-                disabled={isLoading}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        handleLike(e);
+                    }
+                }}
             >
                 <Heart className="h-4 w-4" />
                 <span>{likes}</span>
