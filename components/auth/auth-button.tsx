@@ -30,6 +30,7 @@ export function AuthButton() {
   }, [supabase, router]);
 
   const handleSignIn = async () => {
+    console.log(location.origin)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
