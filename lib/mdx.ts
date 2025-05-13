@@ -2,7 +2,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
-import { supabase } from "./supabase";
+import { supabase } from "./supabase-client";
 
 const notesDirectory = path.join(process.cwd(), "content/notes");
 
