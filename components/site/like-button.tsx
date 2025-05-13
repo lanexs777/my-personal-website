@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-client';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';

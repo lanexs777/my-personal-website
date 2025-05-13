@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { FontToggle } from "./font-toggle";
+import { AuthButton } from "../auth/auth-button";
 
 const links = [
     { href: "/", label: "Home" },
@@ -60,6 +61,7 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center justify-end space-x-4">
+                    <AuthButton />
                     <FontToggle />
                     <ThemeToggle />
 
