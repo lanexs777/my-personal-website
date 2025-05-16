@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { FontToggle } from "./font-toggle";
 import { AuthButton } from "../auth/auth-button";
+import CircularText from "../ui/CircularText/CircularText";
 
 const links = [
     { href: "/", label: "Home" },
@@ -24,15 +25,23 @@ export function Header() {
         <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <nav className="container mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
                 <div className="flex items-center gap-6">
-                    <Link
-                        href="/"
-                        className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2"
-                        tabIndex={0}
-                    >
-                        <span className="font-bold text-xl sm:text-2xl">
-                            khyler5
-                        </span>
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            href="/"
+                            className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2"
+                            tabIndex={0}
+                        >
+                            <span className="font-bold text-xl sm:text-2xl">
+                                khyler5
+                            </span>
+                        </Link>
+                        <CircularText 
+                            text="DEVELOPER • " 
+                            className="!w-[30px] !h-[30px] text-primary"
+                            spinDuration={10}
+                            onHover="speedUp"
+                        />
+                    </div>
 
                     <nav
                         className="hidden md:flex gap-6"
