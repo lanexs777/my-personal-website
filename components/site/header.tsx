@@ -61,7 +61,9 @@ export function Header() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <AuthButton />
+                    <div className="hidden md:block">
+                        <AuthButton />
+                    </div>
                     <FontToggle />
                     <ThemeToggle />
                     <Button
@@ -91,27 +93,34 @@ export function Header() {
                     role="navigation"
                     aria-label="Mobile navigation"
                 >
-                    <nav className="container mx-auto max-w-5xl px-4 py-4">
-                        {links.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={cn(
-                                    "block py-2 text-base font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2",
-                                    pathname === link.href
-                                        ? "text-foreground"
-                                        : "text-muted-foreground"
-                                )}
-                                onClick={() => setMobileMenuOpen(false)}
-                                aria-current={
-                                    pathname === link.href ? "page" : undefined
-                                }
-                                tabIndex={0}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                    </nav>
+                    <div className="container mx-auto max-w-5xl px-4 py-4 space-y-4">
+                        <nav className="space-y-2">
+                            {links.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={cn(
+                                        "block py-2 text-base font-medium transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-2",
+                                        pathname === link.href
+                                            ? "text-foreground"
+                                            : "text-muted-foreground"
+                                    )}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    aria-current={
+                                        pathname === link.href ? "page" : undefined
+                                    }
+                                    tabIndex={0}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </nav>
+                        <div className="pt-2 border-t">
+                            <div className="md:hidden">
+                                <AuthButton />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </header>
