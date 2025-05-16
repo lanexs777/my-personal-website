@@ -4,6 +4,11 @@ import { getNotes } from "@/lib/mdx";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from 'next/dynamic';
+
+const ReactRotatingText = dynamic(() => import('react-rotating-text'), {
+    ssr: false,
+});
 
 export default async function Home() {
     const notes = await getNotes();
@@ -23,7 +28,13 @@ export default async function Home() {
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
                 <div className="order-2 md:order-1 flex-1 space-y-6">
                     <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight">
-                        Hi, I'm <span className="text-primary">Khyler</span>
+                        Hi, I'm <span className="text-primary">
+                            <ReactRotatingText 
+                                items={['Khyler', 'a coder', 'a snowboarder']} 
+                                pause={2000}
+                                typingInterval={100}
+                            />
+                        </span>
                     </h1>
                     <p className="text-xl text-muted-foreground">
                         Welcome to my personal space on the web — a place where
