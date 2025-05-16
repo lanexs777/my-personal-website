@@ -1,4 +1,5 @@
 import { NoteCard } from "@/components/site/note-card";
+import CircularText from "@/components/ui/CircularText/CircularText";
 import { Button } from "@/components/ui/button";
 import { getNotes } from "@/lib/mdx";
 import { ArrowRight } from "lucide-react";
@@ -7,12 +8,13 @@ import Link from "next/link";
 
 export default async function Home() {
     const notes = await getNotes();
-    const validNotes = notes
-        .filter((note): note is NonNullable<typeof note> => note !== null);
-    
+    const validNotes = notes.filter(
+        (note): note is NonNullable<typeof note> => note !== null
+    );
+
     // Get featured notes (top 3 by likes)
     const featuredNotes = validNotes.slice(0, 3);
-    
+
     // Get recent notes (latest 3 by date)
     const recentNotes = [...validNotes]
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -23,7 +25,14 @@ export default async function Home() {
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
                 <div className="order-2 md:order-1 flex-1 space-y-6">
                     <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight">
-                        Hi, I'm <span className="text-primary">Khyler</span>
+                        Hi, I'm{" "}
+                        <span className="inline-flex items-center gap-3">
+                            <span className="text-primary">Khyler</span>
+                            <CircularText
+                                text="Quack*Quack*"
+                                className="w-[60px] h-[60px] text-black"
+                            />
+                        </span>
                     </h1>
                     <p className="text-xl text-muted-foreground">
                         Welcome to my personal space on the web — a place where

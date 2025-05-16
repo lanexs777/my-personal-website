@@ -5,10 +5,10 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { ThemeToggle } from "./theme-toggle";
-import { FontToggle } from "./font-toggle";
 import { AuthButton } from "../auth/auth-button";
+import { Button } from "../ui/button";
+import { FontToggle } from "./font-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 const links = [
     { href: "/", label: "Home" },
@@ -107,7 +107,9 @@ export function Header() {
                                     )}
                                     onClick={() => setMobileMenuOpen(false)}
                                     aria-current={
-                                        pathname === link.href ? "page" : undefined
+                                        pathname === link.href
+                                            ? "page"
+                                            : undefined
                                     }
                                     tabIndex={0}
                                 >
