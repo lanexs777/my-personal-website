@@ -1,5 +1,5 @@
 import { NoteCard } from "@/components/site/note-card";
-import CircularText from "@/components/ui/CircularText/CircularText";
+import RotatingText from "@/components/ui/RotatingText/RotatingText";
 import { Button } from "@/components/ui/button";
 import { getNotes } from "@/lib/mdx";
 import { ArrowRight } from "lucide-react";
@@ -27,10 +27,21 @@ export default async function Home() {
                     <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight">
                         Hi, I'm{" "}
                         <span className="inline-flex items-center gap-3">
-                            <span className="text-primary">Khyler</span>
-                            <CircularText
-                                text="Quack*Quack*"
-                                className="w-[60px] h-[60px] text-black"
+                            <RotatingText
+                                texts={["Khyler", "a Coder"]}
+                                mainClassName="px-2 sm:px-2 md:px-3 bg-emerald-200 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+                                staggerFrom={"last"}
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                exit={{ y: "-120%" }}
+                                staggerDuration={0.025}
+                                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                                transition={{
+                                    type: "spring",
+                                    damping: 30,
+                                    stiffness: 400,
+                                }}
+                                rotationInterval={2000}
                             />
                         </span>
                     </h1>
