@@ -12,8 +12,10 @@ export default async function Home() {
         (note): note is NonNullable<typeof note> => note !== null
     );
 
-    // Get featured notes (top 3 by likes)
-    const featuredNotes = validNotes.slice(0, 3);
+    // Get featured notes (prioritize notes with featured: true, then top by likes)
+    const explicitlyFeatured = validNotes.filter(note => note.featured);
+    const remainingNotes = validNotes.filter(note => !note.featured);
+    const featuredNotes = [...explicitlyFeatured, ...remainingNotes].slice(0, 3);
 
     // Get recent notes (latest 3 by date)
     const recentNotes = [...validNotes]

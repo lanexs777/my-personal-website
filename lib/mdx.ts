@@ -14,6 +14,7 @@ export interface Note {
     excerpt: string;
     content: JSX.Element;
     likeCount?: number;
+    featured?: boolean;
 }
 
 export async function getNotes(): Promise<(Note | null)[]> {
@@ -85,6 +86,7 @@ export async function getNote(slug: string): Promise<Note | null> {
         date: data.date,
         category: categories,
         excerpt: data.excerpt,
-        likeCount: count || 0
+        likeCount: count || 0,
+        featured: data.featured || false
     };
 }

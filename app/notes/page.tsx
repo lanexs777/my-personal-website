@@ -12,6 +12,11 @@ export default async function NotesPage() {
     const validNotes = notes.filter(
         (note): note is NonNullable<typeof note> => note !== null
     );
+    
+    // Sort by date (most recent first)
+    const sortedNotes = validNotes.sort((a, b) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
     return (
         <div className="container px-4 md:px-6 py-10 max-w-5xl mx-auto">
@@ -26,7 +31,7 @@ export default async function NotesPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {validNotes.map((note) => (
+                    {sortedNotes.map((note) => (
                         <NoteCard key={note.slug} note={note} />
                     ))}
                 </div>
